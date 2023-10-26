@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.Game">
+    tools:context=".presentation.GameFragment">
 
     <TextView
         android:id="@+id/tv_timer"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_sum"
         app:layout_constraintVertical_bias="0.445"
         tools:ignore="TextContrastCheck"
-        tools:text="?" />
+        tools:text="\?" />
 
     <TextView
         android:id="@+id/tv_answer_progress"
