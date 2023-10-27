@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.smaglo360.compositiongame.R
 import com.smaglo360.compositiongame.databinding.FragmentGameBinding
 import com.smaglo360.compositiongame.domain.enteties.GameResult
@@ -14,6 +15,8 @@ import com.smaglo360.compositiongame.domain.enteties.Level
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
+
+    private lateinit var viewModel: GameViewModel
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -29,13 +32,6 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            tvOption1.setOnClickListener {
-                val gameSettings = GameSettings(3, 3, 3, 3)
-                val gameResult = GameResult(true, 3, 3, gameSettings)
-                launchGameResultFragment(gameResult)
-            }
-        }
     }
 
     private fun launchGameResultFragment(gameResult: GameResult) {
