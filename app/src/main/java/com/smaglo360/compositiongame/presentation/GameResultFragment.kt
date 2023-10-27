@@ -12,6 +12,8 @@ import com.smaglo360.compositiongame.domain.enteties.GameResult
 import com.smaglo360.compositiongame.domain.enteties.GameSettings
 
 class GameResultFragment : Fragment() {
+
+    private lateinit var gameResult: GameResult
     private var _binding: FragmentGameResultBinding? = null
     private val binding: FragmentGameResultBinding
         get() = _binding ?: throw RuntimeException("FragmentGameResultBinding == null")
@@ -29,9 +31,23 @@ class GameResultFragment : Fragment() {
         _binding = null
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parseArgs()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setCallbacks()
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
+        with(binding) {
+            mbStartAgain.setOnClickListener {
+                retryGame()
+            }
+        }
     }
 
     private fun setCallbacks() {
@@ -45,10 +61,17 @@ class GameResultFragment : Fragment() {
         )
     }
 
+    private fun parseArgs() {
+        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
+            gameResult = it
+        }
+    }
+
     private fun retryGame() {
         requireActivity().supportFragmentManager.popBackStack(
             GameFragment.NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 
     companion object {
@@ -57,7 +80,7 @@ class GameResultFragment : Fragment() {
         fun newInstance(gameResult: GameResult): GameResultFragment {
             return GameResultFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_GAME_RESULT, gameResult)
+                    putParcelable(KEY_GAME_RESULT, gameResult)
                 }
             }
         }
