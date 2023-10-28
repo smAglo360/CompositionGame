@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@android:color/holo_purple"
         android:textSize="24sp"
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:background="@android:color/holo_blue_light"
+        android:text="\?"
         app:layout_constraintBottom_toTopOf="@id/tv_answer_progress"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +65,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_visible_number"
         app:layout_constraintTop_toBottomOf="@id/tv_sum"
         app:layout_constraintVertical_bias="0.445"
-        tools:ignore="TextContrastCheck"
-        android:text="\?" />
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/tv_answer_progress"
@@ -82,8 +83,8 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
         android:layout_marginHorizontal="16dp"
+        android:max="100"
         app:layout_constraintBottom_toTopOf="@id/tv_option_3"
         app:layout_constraintTop_toBottomOf="@id/tv_answer_progress" />
 
