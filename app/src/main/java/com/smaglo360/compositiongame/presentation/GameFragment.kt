@@ -2,25 +2,28 @@ package com.smaglo360.compositiongame.presentation
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.smaglo360.compositiongame.R
 import com.smaglo360.compositiongame.databinding.FragmentGameBinding
 import com.smaglo360.compositiongame.domain.enteties.GameResult
-import com.smaglo360.compositiongame.domain.enteties.GameSettings
 import com.smaglo360.compositiongame.domain.enteties.Level
 
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
 
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(requireActivity().application, level)
+    }
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
     private val tvOptions by lazy {
         mutableListOf<TextView>().apply {
@@ -49,7 +52,6 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeViews()
         setOnClickListeners()
-        viewModel.startGame(level)
     }
 
 
@@ -89,6 +91,7 @@ class GameFragment : Fragment() {
             binding.progressBar.secondaryProgress = it
         }
     }
+
     private fun getColorByState(state: Boolean): Int {
         val colorResId = if (state) {
             android.R.color.holo_green_light
@@ -99,18 +102,17 @@ class GameFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        for (i in 0 until tvOptions.size) {
-            tvOptions[i].setOnClickListener {
-                viewModel.chooseAnswer(tvOptions[i].text.toString().toInt())
+        for (tvOption in tvOptions) {
+            tvOption.setOnClickListener {
+                viewModel.chooseAnswer(tvOption.text.toString().toInt())
             }
         }
     }
 
     private fun launchGameResultFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
+        requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, GameResultFragment.newInstance(gameResult))
-            .addToBackStack(NAME)
+            .addToBackStack(null)
             .commit()
     }
 
