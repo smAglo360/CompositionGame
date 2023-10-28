@@ -2,7 +2,6 @@ package com.smaglo360.compositiongame.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -68,6 +67,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         getGameSettings(level)
         startTimer()
         generateQuestion()
+        updateProgress()
     }
 
     fun chooseAnswer(number: Int) {
@@ -100,7 +100,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun calculatePercentageOfRightAnswers(): Int {
-        return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        return if (countOfRightAnswers != 0) {
+            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        } else {
+            0
+        }
     }
 
     private fun getGameSettings(level: Level) {
@@ -111,8 +115,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun startTimer() {
         timer = object : CountDownTimer(
-            gameSettings.gameTimeInSeconds * MILIS_IN_SECONDS,
-            MILIS_IN_SECONDS
+            gameSettings.gameTimeInSeconds * MILLIS_IN_SECONDS,
+            MILLIS_IN_SECONDS
         ) {
             override fun onTick(milisUntilFinished: Long) {
                 _formattedTime.value = formatTime(milisUntilFinished)
@@ -130,11 +134,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         timer?.cancel()
     }
 
-    private fun formatTime(milisUntilFinished: Long): String {
-        val seconds = milisUntilFinished / MILIS_IN_SECONDS
+    private fun formatTime(millisUntilFinished: Long): String {
+        val seconds = millisUntilFinished / MILLIS_IN_SECONDS
         val minutes = seconds / SECONDS_IN_MINUTES
         val leftSeconds = seconds - (minutes * SECONDS_IN_MINUTES)
-        return String().format("%02d:%02d", minutes, leftSeconds)
+        return String.format("%02d:%02d", minutes, leftSeconds)
     }
 
     private fun generateQuestion() {
@@ -143,8 +147,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun finishGame() {
         _gameResult.value = GameResult(
-            enoughCountOfRightAnswers.value == true
-                    && enoughPercentOfRightAnswers.value == true,
+            countOfRightAnswers >= gameSettings.minCountOfRightAnswers,
             countOfRightAnswers,
             countOfQuestions,
             gameSettings
@@ -152,7 +155,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     companion object {
-        private const val MILIS_IN_SECONDS = 1000L
+        private const val MILLIS_IN_SECONDS = 1000L
         private const val SECONDS_IN_MINUTES = 60
     }
 }
