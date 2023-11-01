@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.smaglo360.compositiongame.R
 import com.smaglo360.compositiongame.databinding.FragmentLevelOptionsBinding
 import com.smaglo360.compositiongame.domain.enteties.Level
@@ -46,21 +47,14 @@ class LevelOptionsFragment : Fragment() {
     }
 
     private fun launchGameFragment(level: Level) {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_container, GameFragment.newInstance(level))
-            .addToBackStack(GameFragment.NAME)
-            .commit()
+        findNavController().navigate(
+            LevelOptionsFragmentDirections.actionLevelOptionsFragmentToGameFragment(level
+            )
+        )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(): LevelOptionsFragment {
-            return LevelOptionsFragment()
-        }
     }
 }

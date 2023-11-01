@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.smaglo360.compositiongame.presentation.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_levelOptionsFragment"
+            app:destination="@id/levelOptionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/levelOptionsFragment"
+        android:name="com.smaglo360.compositiongame.presentation.LevelOptionsFragment"
+        android:label="fragment_level_options"
+        tools:layout="@layout/fragment_level_options" >
+        <action
+            android:id="@+id/action_levelOptionsFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.smaglo360.compositiongame.presentation.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_gameResultFragment"
+            app:destination="@id/gameResultFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="level"
+            app:argType="com.smaglo360.compositiongame.domain.enteties.Level" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameResultFragment"
+        android:name="com.smaglo360.compositiongame.presentation.GameResultFragment"
+        android:label="fragment_game_result"
+        tools:layout="@layout/fragment_game_result" >
+        <argument
+            android:name="gameResult"
+            app:argType="com.smaglo360.compositiongame.domain.enteties.GameResult" />
+    </fragment>
+</navigation>
