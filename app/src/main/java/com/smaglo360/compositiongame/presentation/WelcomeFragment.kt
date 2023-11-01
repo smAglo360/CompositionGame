@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.smaglo360.compositiongame.R
 import com.smaglo360.compositiongame.databinding.FragmentWelcomeBinding
 
@@ -30,11 +31,7 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun launchLevelOptionsFragment() {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_container, LevelOptionsFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(R.id.action_welcomeFragment_to_levelOptionsFragment)
     }
 
     override fun onDestroyView() {
